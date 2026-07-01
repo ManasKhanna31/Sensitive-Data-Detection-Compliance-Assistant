@@ -69,7 +69,10 @@ if run_button and uploaded_file is not None:
     st.session_state.risk_detail = risk_detail
     st.session_state.summary = summary
     st.session_state.qa_engine = QAEngine(text, results, summary)
-    st.session_state.chat_history = []
+    if "chat_history" not in st.session_state:
+        st.session_state.chat_history = []
+    else:
+        st.session_state.chat_history.clear()
 
 if st.session_state.processed:
     results = st.session_state.results
@@ -83,15 +86,9 @@ if st.session_state.processed:
     c2.metric("Categories Detected", len(summary["category_counts"]))
     c3.metric("Risk Score (weighted)", st.session_state.risk_score)
 
-    view_options = ["📋 Detected Data", "📝 Compliance Summary", "🕶️ Redacted View", "💬 Ask Questions"]
-    if "active_view" not in st.session_state:
-        st.session_state.active_view = view_options[0]
-    active_view = st.radio(
-        "View", view_options, horizontal=True, label_visibility="collapsed", key="active_view"
-    )
-    st.divider()
+    tab1, tab2, tab3, tab4 = st.tabs(["📋 Detected Data", "📝 Compliance Summary", "🕶️ Redacted View", "💬 Ask Questions"])
 
-    if active_view == "📋 Detected Data":
+    with tab1:
         if results:
             df = pd.DataFrame([{
                 "Category": r.category,
@@ -149,7 +146,6 @@ if st.session_state.processed:
             st.session_state.chat_history.append(("user", question))
             answer = st.session_state.qa_engine.answer(question)
             st.session_state.chat_history.append(("assistant", answer))
-            st.rerun()
 
 else:
     st.info("👈 Upload a PDF, TXT, or CSV file and click **Analyze Document** to get started.")
