@@ -83,9 +83,15 @@ if st.session_state.processed:
     c2.metric("Categories Detected", len(summary["category_counts"]))
     c3.metric("Risk Score (weighted)", st.session_state.risk_score)
 
-    tab1, tab2, tab3, tab4 = st.tabs(["📋 Detected Data", "📝 Compliance Summary", "🕶️ Redacted View", "💬 Ask Questions"])
+    view_options = ["📋 Detected Data", "📝 Compliance Summary", "🕶️ Redacted View", "💬 Ask Questions"]
+    if "active_view" not in st.session_state:
+        st.session_state.active_view = view_options[0]
+    active_view = st.radio(
+        "View", view_options, horizontal=True, label_visibility="collapsed", key="active_view"
+    )
+    st.divider()
 
-    with tab1:
+    if active_view == "📋 Detected Data":
         if results:
             df = pd.DataFrame([{
                 "Category": r.category,
