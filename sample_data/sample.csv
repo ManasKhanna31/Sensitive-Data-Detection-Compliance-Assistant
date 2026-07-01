@@ -1,0 +1,4 @@
+EmployeeID,Name,Email,Phone,PAN,AccountNumber,IFSC
+EMP-1001,Anita Verma,anita.verma@examplecorp.com,9812345670,BXPPV1234K,987654321098,ICIC0002233
+EMP-1002,Karan Mehta,karan.mehta@examplecorp.com,9823456781,CVPKM5678L,876543210987,SBIN0011223
+EMP-1003,Neha Iyer,neha.iyer@examplecorp.com,9834567892,DXQIN9012M,765432109876,AXIS0033445

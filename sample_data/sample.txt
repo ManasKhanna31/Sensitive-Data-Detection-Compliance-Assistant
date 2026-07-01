@@ -1,0 +1,26 @@
+CONFIDENTIAL - INTERNAL USE ONLY
+
+Employee Onboarding Record
+
+Name: Rohan Sharma
+Employee ID: EMP-4521
+Email: rohan.sharma@examplecorp.com
+Phone: 9876543210
+Aadhaar Number: 2345 6789 0123
+PAN Number: ABCDE1234F
+
+Bank Details:
+Account Number: 123456789012
+IFSC Code: HDFC0001234
+
+System Access:
+api_key: DUMMY_TEST_KEY_9f8e7d6c5b4a3210
+password: SuperSecret123!
+
+Notes:
+This document contains proprietary and confidential business information
+regarding the Q3 product roadmap. Do not distribute outside the HR and
+Finance departments. Any unauthorized disclosure may result in disciplinary
+action and violates company data protection policy.
+
+For questions, contact hr-support@examplecorp.com or call +91 9123456780.
