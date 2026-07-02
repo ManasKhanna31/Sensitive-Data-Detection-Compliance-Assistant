@@ -8,7 +8,7 @@ Built as a mini-project assignment — designed to demonstrate approach, problem
 
 ## 🔗 Live Deployment
 
-**Working prototype:** ->  https://sensitive-data-detection-compliance-assistant-bxgfneyswgfhbezt.streamlit.app/
+**Working prototype:**|  https://sensitive-data-detection-compliance-assistant-bxgfneyswgfhbezt.streamlit.app/|
 
 Try it instantly with the sample files in `sample_data/` — no setup required.
 
@@ -20,9 +20,9 @@ Try it instantly with the sample files in `sample_data/` — no setup required.
 
 | Requirement | Link / Location |
 |---|---|
-| GitHub Repository ->  https://github.com/ManasKhanna31/Sensitive-Data-Detection-Compliance-Assistant
-| Demo Video ->  https://drive.google.com/file/d/1_Y4_uGVIIRqj9YrSWKeqktns0tLY99wo/view?usp=sharing
-| Deployment Link ->  https://sensitive-data-detection-compliance-assistant-bxgfneyswgfhbezt.streamlit.app/
+| GitHub Repository | https://github.com/ManasKhanna31/Sensitive-Data-Detection-Compliance-Assistant|
+| Demo Video |  https://drive.google.com/file/d/1_Y4_uGVIIRqj9YrSWKeqktns0tLY99wo/view?usp=sharing|
+| Deployment Link |  https://sensitive-data-detection-compliance-assistant-bxgfneyswgfhbezt.streamlit.app/|
 | Setup Instructions | [§ Setup Instructions](#️-setup-instructions) |
 | Architecture Overview | [§ Architecture Overview](#️-architecture-overview) |
 | AI/ML Approach Used | [§ AI/ML Approach Used](#-aiml-approach-used) |
