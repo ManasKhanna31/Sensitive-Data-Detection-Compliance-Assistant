@@ -6,6 +6,31 @@ Built as a mini-project assignment — designed to demonstrate approach, problem
 
 ---
 
+## 🔗 Live Deployment
+
+**Working prototype:** ->  https://sensitive-data-detection-compliance-assistant-bxgfneyswgfhbezt.streamlit.app/
+
+Try it instantly with the sample files in `sample_data/` — no setup required.
+
+## 🎥 Demo Video
+
+**Demo video (2–5 min):** ->  https://drive.google.com/file/d/1_Y4_uGVIIRqj9YrSWKeqktns0tLY99wo/view?usp=sharing
+
+## 📋 Submission Quick Reference
+
+| Requirement | Link / Location |
+|---|---|
+| GitHub Repository ->  https://github.com/ManasKhanna31/Sensitive-Data-Detection-Compliance-Assistant
+| Demo Video ->  https://drive.google.com/file/d/1_Y4_uGVIIRqj9YrSWKeqktns0tLY99wo/view?usp=sharing
+| Deployment Link ->  https://sensitive-data-detection-compliance-assistant-bxgfneyswgfhbezt.streamlit.app/
+| Setup Instructions | [§ Setup Instructions](#️-setup-instructions) |
+| Architecture Overview | [§ Architecture Overview](#️-architecture-overview) |
+| AI/ML Approach Used | [§ AI/ML Approach Used](#-aiml-approach-used) |
+| Challenges Faced | [§ Challenges Faced](#-challenges-faced) |
+| Future Improvements | [§ Future Improvements](#-future-improvements) |
+
+---
+
 ## ✨ Features
 
 - **Multi-format upload**: PDF, TXT, CSV
@@ -88,28 +113,50 @@ cd sensitive-data-assistant
 pip install -r requirements.txt
 ```
 
-### 2. Run the app
+### 2. (Only needed for local OCR) Install Tesseract + Poppler
+OCR (scanned/image-only PDF support) needs two system binaries that aren't installed via `pip`. **This step is only required if you're running locally** — the Docker image and Streamlit Cloud deployment already have these baked in (via `Dockerfile` / `packages.txt`).
+```bash
+# macOS
+brew install tesseract poppler
+# Ubuntu/Debian
+sudo apt-get install tesseract-ocr poppler-utils
+# Windows: install both from their respective release pages and add to PATH
+#   Tesseract: https://github.com/UB-Mannheim/tesseract/wiki
+#   Poppler:   https://github.com/oschwartz10612/poppler-windows/releases
+```
+If these aren't installed, everything else still works — OCR simply falls back gracefully and scanned PDFs will show a "no extractable text" warning instead of crashing.
+
+### 3. Run the app
 ```bash
 streamlit run app.py
 ```
 Then open the URL shown in the terminal (typically `http://localhost:8501`).
 
-### 3. Try it
+### 4. Try it
 - Use the sample files in `sample_data/` (`sample.txt`, `sample.csv`) — both contain synthetic (fake) PII for demo purposes.
-- Upload a file in the sidebar → click **Analyze Document**.
-- Explore the four tabs: Detected Data, Compliance Summary, Redacted View, Ask Questions.
+- Upload one file, or select multiple files at once, in the sidebar → click **Analyze Document(s)**.
+- If you uploaded more than one file, a **Portfolio Overview** table appears showing risk level across all documents.
+- Pick a document from the dropdown (if multiple) and explore its four views: Detected Data, Compliance Summary, Redacted View, Ask Questions.
 
-### 4. (Optional) Enable LLM-powered answers
+### 5. (Optional) Enable LLM-powered answers
 ```bash
 export OPENAI_API_KEY=your_key_here
 ```
 The app works fully without this — it's an optional enhancement wired in `src/qa_engine.py`.
 
-### 5. Run with Docker
+### 6. Run with Docker
+The Docker image includes Tesseract + Poppler already, so OCR works out of the box — no extra setup needed.
 ```bash
 docker build -t sensitive-data-assistant .
 docker run -p 8501:8501 sensitive-data-assistant
 ```
+Then open `http://localhost:8501`.
+
+### 7. Deploy your own copy (Streamlit Community Cloud)
+1. Push this repo to your own GitHub account.
+2. Go to [share.streamlit.io](https://share.streamlit.io) → **New app** → select your repo, branch `main`, main file `app.py`.
+3. Streamlit Cloud automatically reads `packages.txt` and installs `tesseract-ocr` + `poppler-utils` for OCR support — no manual configuration needed.
+4. Deploy — you'll get a public `*.streamlit.app` URL (this is what goes in the **Live Deployment** section at the top of this README).
 
 ---
 
