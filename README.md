@@ -104,11 +104,23 @@ This layered approach was a deliberate design decision: it demonstrates understa
 
 ---
 
+## Tech Stack
+
+- Python
+- Streamlit
+- Pandas
+- pdfplumber
+- pytesseract
+- scikit-learn
+- NumPy
+- OpenCV
+- Docker
+
 ## ⚙️ Setup Instructions
 
 ### 1. Clone and install
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/ManasKhanna31/Sensitive-Data-Detection-Compliance-Assistant.git
 cd sensitive-data-assistant
 pip install -r requirements.txt
 ```
