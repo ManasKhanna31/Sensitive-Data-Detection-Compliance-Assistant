@@ -18,6 +18,8 @@ Built as a mini-project assignment — designed to demonstrate approach, problem
   - 📝 Audit logging (every scan appended to a local JSONL log, viewable in-app)
   - 🐳 Dockerized
   - 📊 Multi-tab dashboard UI (detected data table + chart, summary, redacted view, chat)
+  - 🔎 OCR support for scanned/image-only PDFs (Tesseract fallback when no text layer is found)
+  - 📚 Multi-document support with a portfolio-level risk overview across all uploaded files
 
 ---
 
@@ -117,14 +119,14 @@ docker run -p 8501:8501 sensitive-data-assistant
 - **CSV/table context**: PII detectors are built for free text; CSVs needed to be flattened row-by-row while preserving enough context for the "context" field in results to still be meaningful.
 - **Risk scoring calibration**: a simple sum of weights over-penalizes documents with lots of low-risk items (e.g. many emails). Log-dampening the raw score fixed this, but the thresholds are still heuristic and would benefit from calibration against real labeled examples.
 - **Q&A without a guaranteed LLM API key**: designed a two-layer (intent + TF-IDF retrieval) system so the app is fully functional and demoable without any paid API, while leaving a clean integration point for an LLM if available.
+- **OCR accuracy on scanned documents**: Tesseract occasionally misreads characters (e.g. "5" as "S") in low-resolution scans, which can cause a regex-based detector to miss a match it would have caught on clean text. This is an inherent OCR-engine limitation rather than a detection-logic bug — a production system would likely add fuzzy/approximate matching post-OCR to compensate.
+- **Multi-document risk ranking**: when two documents land in the same risk *tier* (e.g. both "High Risk"), the portfolio view needed a secondary sort key (the underlying weighted score) to correctly identify which one is actually riskier — a tier alone isn't precise enough for ranking.
 
 ---
 
 ## 🚀 Future Improvements
 
 - Swap/augment regex detection with a trained NER model (e.g. spaCy custom pipeline or a fine-tuned transformer) for higher-precision entity detection, especially for less structured fields like "Confidential Business Information."
-- Add OCR (e.g. Tesseract) to support scanned/image-based PDFs.
-- Multi-document / batch upload with cross-document risk aggregation and a portfolio-level compliance dashboard.
 - Proper vector-store-backed RAG (FAISS/Chroma) for large multi-page documents where sentence-level TF-IDF may miss cross-sentence context.
 - Role-based access control and encrypted storage for the audit log in a real deployment.
 - Deploy to Streamlit Community Cloud / Render / HF Spaces for a public demo link.
@@ -144,6 +146,7 @@ sensitive-data-assistant/
 │   ├── qa_engine.py           # intent layer + TF-IDF retrieval QA
 │   ├── redaction.py           # masking/redaction (bonus)
 │   └── audit_logger.py        # scan audit log (bonus)
+├── packages.txt                # apt-level OCR deps for Streamlit Cloud (tesseract-ocr, poppler-utils)
 ├── sample_data/
 │   ├── sample.txt             # synthetic PII sample
 │   └── sample.csv             # synthetic employee records sample

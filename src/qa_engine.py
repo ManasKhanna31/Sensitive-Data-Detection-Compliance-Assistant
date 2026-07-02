@@ -28,6 +28,46 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 from src.detectors import DetectionResult, summarize_counts
 
+# Common phrasing variants -> canonical category name. Keeps the intent layer
+# deterministic (no ML/fuzzy matching needed) while covering realistic
+# variations a user might actually type instead of the exact category label.
+CATEGORY_SYNONYMS: Dict[str, str] = {
+    "email": "Email Address", "emails": "Email Address",
+    "mail": "Email Address", "mails": "Email Address", "e-mail": "Email Address",
+    "phone": "Phone Number", "phones": "Phone Number", "mobile": "Phone Number",
+    "contact number": "Phone Number", "mobile number": "Phone Number", "phone number": "Phone Number",
+    "aadhaar": "Aadhaar Number", "aadhar": "Aadhaar Number", "adhaar": "Aadhaar Number",
+    "pan": "PAN Number",
+    "card": "Credit Card Number", "credit card": "Credit Card Number", "cards": "Credit Card Number",
+    "account": "Bank Account Number", "bank account": "Bank Account Number",
+    "ifsc": "Bank IFSC Code",
+    "api key": "API Key / Secret", "apikey": "API Key / Secret", "secret": "API Key / Secret", "key": "API Key / Secret",
+    "aws": "AWS Access Key",
+    "password": "Password", "passwords": "Password",
+    "employee id": "Employee ID", "employee": "Employee ID", "emp id": "Employee ID",
+    "confidential": "Confidential Business Marker",
+}
+
+
+# Words too generic to reliably identify a category on their own (they appear
+# in multiple category names, e.g. "Number" is in Phone/Aadhaar/PAN/Bank Account).
+_GENERIC_TOKENS = {"number", "address", "code"}
+
+
+def _resolve_category(question: str, counts: Dict[str, int]) -> str:
+    """Find which detected category a free-text question is asking about,
+    trying exact category-name words first (ignoring generic tokens that
+    would match multiple categories), then the synonym map."""
+    for category in counts:
+        distinctive = [w for w in category.split() if w.lower() not in _GENERIC_TOKENS]
+        if distinctive and any(w.lower() in question for w in distinctive):
+            return category
+    # sort longer phrases first so "credit card" matches before "card"
+    for phrase in sorted(CATEGORY_SYNONYMS, key=len, reverse=True):
+        if phrase in question and CATEGORY_SYNONYMS[phrase] in counts:
+            return CATEGORY_SYNONYMS[phrase]
+    return ""
+
 
 def _split_sentences(text: str) -> List[str]:
     sentences = re.split(r"(?<=[.!?])\s+|\n+", text)
@@ -57,9 +97,9 @@ class QAEngine:
 
         if "how many" in q or "count" in q:
             counts = summarize_counts(self.results)
-            for category in counts:
-                if any(word.lower() in q for word in category.split()):
-                    return f"{counts[category]} instance(s) of {category} were found."
+            category = _resolve_category(q, counts)
+            if category:
+                return f"{counts[category]} instance(s) of {category} were found."
             if counts:
                 lines = "\n".join(f"- {c}: {n}" for c, n in counts.items())
                 return f"Detected sensitive data counts:\n{lines}"
