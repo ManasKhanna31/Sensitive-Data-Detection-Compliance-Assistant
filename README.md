@@ -8,7 +8,7 @@ Built as a mini-project assignment — designed to demonstrate approach, problem
 
 ## 🔗 Live Deployment
 
-**Working prototype:** ->  https://sensitive-data-detection-compliance-assistant-bxgfneyswgfhbezt.streamlit.app/
+**Working prototype:** [PASTE YOUR STREAMLIT CLOUD URL HERE — e.g. https://your-app-name.streamlit.app]
 
 Try it instantly with the sample files in `sample_data/` — no setup required.
 
